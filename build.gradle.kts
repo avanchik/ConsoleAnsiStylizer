@@ -1,10 +1,11 @@
 plugins {
     kotlin("jvm") version "1.9.22"
     application
+    `maven-publish`
 }
 
-group = "org.example"
-version = "1.0-SNAPSHOT"
+group = "avanchik"
+version = "0.0.1"
 
 repositories {
     mavenCentral()
@@ -24,4 +25,17 @@ kotlin {
 
 application {
     mainClass.set("MainKt")
+}
+
+val publicationName = "mavenKotlin"
+
+publishing {
+    publications {
+        create<MavenPublication>(publicationName) {
+            artifactId = "ConsoleAnsiStylizer"
+            from(components["java"])
+            groupId = "com.github.avanchik"
+            version = "0.0.1"
+        }
+    }
 }
