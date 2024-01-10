@@ -65,23 +65,27 @@ Step 2. Add the dependency
 #### Example 1
 ```kotlin
 fun forEachAllStylize() {
-println("\nDifferent text styles:")
-Styles.entries.forEach { print(stylizeText(it.name, styles = arrayOf(it)) + " ") }
-
-    println("\nDifferent text colors:")
-    Colors.entries.forEach {
-        print(stylizeText(it.name, fgColor = it) + " ")
+    println("\n\nDifferent text styles:")
+    Styles.entries.forEachIndexed { i, style ->
+        print(stylizeText(style.name, styles = arrayOf(style)) + if ((i + 1) % 7 == 0) "\n" else " ")
     }
-    println()
-    println("\nDifferent background colors:")
-    Colors.entries.forEach {
-        print(stylizeText("${it.name} bg", bgColor = it) + " ")
+    println("\n\nDifferent text colors:")
+    Colors.entries.forEachIndexed { i, color ->
+        print(stylizeText(color.name, fgColor = color) + if ((i + 1) % 6 == 0) "\n" else " ")
+    }
+    println("\n\nDifferent background colors:")
+    Colors.entries.forEachIndexed { i, color ->
+        print(stylizeText(" ${color.name} bg ", fgColor = Colors.Black, bgColor = color)
+                + if ((i + 1) % 6 == 0) "\n" else " ")
     }
     println()
 }
 ```
 The output:
-![1.png](https://github.com/avanchik/ConsoleAnsiStylizer/blob/master/readme_imgs/1.png)
+#### intellij terminal
+![1.intellij.png](https://github.com/avanchik/ConsoleAnsiStylizer/blob/master/readme_imgs/1.intellij.png)
+#### MacOs terminal
+![1.macos.png](https://github.com/avanchik/ConsoleAnsiStylizer/blob/master/readme_imgs/1.macos.png)
 
 
 #### Example 2
@@ -112,11 +116,11 @@ fun showAnsiStylesExample2() {
     println(
         "\n$h1 This is an example of an h1 heading $t\nThis is regular text$b, and this is bold text$t in the middle " +
                 "of regular text.\n\n$timeStyle${Instant.now()}$t #>\tThis is the current timestamp " +
-                "with regular text and a link to ${a}127.0.0.1:8080$t in the middle.\nMore text to demonstrate" +
-                " ANSI styles.$descriptionStyle //And this is text with a style like the comments in the code." +
-                "\n$timeStyle${Instant.now()}$t ${logTagStyle}LOG_TAG$t #>\tRegular text again and some more text."
+                "with regular text\n and a link to ${a}127.0.0.1:8080$t in the middle.\nMore text to demonstrate" +
+                " ANSI styles.$descriptionStyle //Style like the comments in the code." +
+                "\n$timeStyle${Instant.now()}$t ${logTagStyle}LOG_TAG$t #>\tRegular text again and some more text.\n"
     )
 }
 ```
 The output:
-![2.png](https://github.com/avanchik/ConsoleAnsiStylizer/blob/master/readme_imgs/2.png)
+![2.macos.png](https://github.com/avanchik/ConsoleAnsiStylizer/blob/master/readme_imgs/2.macos.png)
