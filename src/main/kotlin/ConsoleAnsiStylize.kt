@@ -91,4 +91,45 @@ object ConsoleAnsiStylize {
         )
         return "$code$text$endCode"
     }
+
+    data class AnsiStyles(
+        var fgColor: Colors = Colors.Default,
+        var bgColor: Colors = Colors.Default,
+        val styles: MutableSet<Styles>
+    ) {
+        var code: String = ""
+            private set
+            get() {
+                if (isChanged) updateCodes()
+                return field
+            }
+
+        var endCode: String = ""
+            private set
+            get() {
+                if (isChanged) updateCodes()
+                return field
+            }
+
+        private var isChanged = true
+
+        private fun generateAnsiCode(
+            isEndCodes: Boolean = false
+        ): String {
+            val styleCodes = styles.map { it.code }.toSet()
+            val styleEndCodes = styles.map { it.endCode }.toSet()
+            val colorCodes = setOf(fgColor.code, bgColor.code + ColorCodeOffset.BgColors.offset)
+
+            val codes = (styleCodes + colorCodes).joinToString(";")
+            val endCodes = (styleEndCodes + colorCodes).joinToString(";")
+
+            return if (isEndCodes) "$ANSI_ESC_PREF$endCodes$ANSI_ESC_SUFF" else "$ANSI_ESC_PREF$codes$ANSI_ESC_SUFF"
+        }
+
+        private fun updateCodes() {
+            code = generateAnsiCode()
+            endCode = generateAnsiCode(true)
+            isChanged = false
+        }
+    }
 }
