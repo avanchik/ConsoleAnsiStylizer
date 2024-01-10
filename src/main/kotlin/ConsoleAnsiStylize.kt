@@ -1,4 +1,3 @@
-
 object ConsoleAnsiStylize {
     /**
      * ANSI escape sequence prefix. This is used to initiate ANSI styling in console output.
@@ -10,13 +9,21 @@ object ConsoleAnsiStylize {
      */
     const val ANSI_ESC_SUFF = "m"
 
+    /**
+     * ANSI escape sequence to cancel all styles and colors. It resets the text to the default style.
+     */
+    const val RESET = "${ANSI_ESC_PREF}0$ANSI_ESC_SUFF"
+
+
     enum class Styles(val code: Int, val endCode: Int) {
         Bold(1, 22),
         Dim(2, 22),
         Italic(3, 23),
         Underline(4, 24),
-        Blink(5, 25),
+        SlowBlink(5, 25),
+        RapidBlink(6, 25),
         Reverse(7, 27),
+        Hide(8, 28),
         Strikethrough(9, 29),
         Framed(51, 54),
         Encircled(52, 54),
@@ -50,10 +57,10 @@ object ConsoleAnsiStylize {
     }
 
     fun generateAnsiCode(
-        isEndCodes: Boolean = false,
         fgColor: Colors = Colors.Default,
         bgColor: Colors = Colors.Default,
-        vararg styles: Styles
+        vararg styles: Styles,
+        isEndCodes: Boolean = false
     ): String {
         val styleCodes = styles.map { it.code }.toSet()
         val styleEndCodes = styles.map { it.endCode }.toSet()
